@@ -11,9 +11,9 @@ import cProfile
 import pstats
 
 # import data from mat-File
-flight_data = sio.loadmat('./filter_result_matlab.mat')
+flight_data = sio.loadmat('./HiL_test_filter_input.mat')
 vehicle_position = flight_data['position_array']
-local_updraft_estimate = flight_data['energy_reward_array'].flatten()
+local_updraft_estimate = flight_data['local_updraft_estimate'].flatten()
 
 # create storage arrays for export
 n_steps = local_updraft_estimate.size
@@ -40,7 +40,7 @@ p.disable()
 filter_data = {'particle_array': particle_array, 'position_array': vehicle_position,
                'filtered_state_array': filtered_state_array}
 
-sio.savemat('./pf_python_sklearn.mat', filter_data)
+sio.savemat('./HiL_test_filter_result.mat', filter_data)
 
 stats = pstats.Stats(p).sort_stats('cumtime')
 stats.print_stats()
