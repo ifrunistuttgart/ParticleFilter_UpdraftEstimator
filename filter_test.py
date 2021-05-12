@@ -37,7 +37,7 @@ for i in range(n_steps):
     filtered_state_array[:, :, i] = filter_instance.filtered_state
 p.disable()
 # export and save filter results
-filter_data = {'particle_array': particle_array, 'position_array': vehicle_position,
+filter_data = {'particle_array': particle_array,
                'filtered_state_array': filtered_state_array}
 
 sio.savemat('./HiL_test_filter_result.mat', filter_data)
