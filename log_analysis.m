@@ -12,3 +12,5 @@ end
 local_updraft_estimate = table2array(data(:,6))';
 save('HiL_test_filter_input.mat','position_array','local_updraft_estimate')
 
+%TODO: Filter reset trigger einbauen
+

@@ -11,12 +11,13 @@ import cProfile
 import pstats
 
 # import data from mat-File
-flight_data = sio.loadmat('./HiL_test_filter_input.mat')
+flight_data = sio.loadmat('./HiL_1705.mat')
 vehicle_position = flight_data['position_array']
-local_updraft_estimate = flight_data['local_updraft_estimate'].flatten()
+local_updraft_estimate = flight_data['energy_reward_array'].flatten()
 
 # create storage arrays for export
 n_steps = local_updraft_estimate.size
+print("Number of steps: {}".format(n_steps))
 filtered_state_array = np.zeros([4, 6, n_steps])
 particle_array = np.zeros([5, 2000, n_steps])
 
@@ -38,9 +39,9 @@ for i in range(n_steps):
 p.disable()
 # export and save filter results
 filter_data = {'particle_array': particle_array,
-               'filtered_state_array': filtered_state_array}
+               'filtered_state_array': filtered_state_array, 'filter_steps': n_steps}
 
-sio.savemat('./HiL_test_filter_result.mat', filter_data)
+sio.savemat('./HiL_1705_filter_result.mat', filter_data)
 
 stats = pstats.Stats(p).sort_stats('cumtime')
 stats.print_stats()

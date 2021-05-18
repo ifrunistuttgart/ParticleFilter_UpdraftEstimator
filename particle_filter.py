@@ -43,7 +43,7 @@ class ParticleFilter:
         """
 
         self.params = particle_filter_params.ParamsParticleFilter()
-        self.prevent = True
+        self.prevent = False
         self.particles = self.init_particles()
         self.IDX = np.zeros(self.params.N, dtype=np.uint64)
         self.cluster_num = 0
