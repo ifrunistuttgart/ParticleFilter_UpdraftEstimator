@@ -2,7 +2,7 @@
 
 % load results from HiL test
 logdata = readmatrix('./HIL_Test_17_05/log_17-May-2021_13-00.csv');
-position_array = logdata(2:601,5:7)';
+position_array = logdata(1:600,5:7)';
 
 load('HiL_1705_filter_result.mat');
 % filter_input = 'HiL_test_filter_input.mat'
