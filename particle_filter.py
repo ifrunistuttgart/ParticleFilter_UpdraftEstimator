@@ -56,7 +56,7 @@ class ParticleFilter:
         self.IDX = np.zeros(self.params.N, dtype=np.uint64)
         self.cluster_num = 0
         self.filtered_state = np.zeros([4, 6])
-        self.filter_step = 0
+        #self.filter_step = 0
 
     def init_particles(self):
         """ Initializes particles with random NE-positions and equal weights
@@ -179,12 +179,12 @@ class ParticleFilter:
             j = 0
 
             for i in range(self.params.N):
-                u = rho + (i - 1) / self.params.N
+                u = rho + i / self.params.N
 
                 while u > cum_sum:
                     j = j + 1
                     cum_sum = cum_sum + self.particles[4, j]
-                    particles_new[:, i] = self.particles[:, j]
+                particles_new[:, i] = self.particles[:, j]
 
             # prevents clustered particles from being resampled
             if self.prevent:
