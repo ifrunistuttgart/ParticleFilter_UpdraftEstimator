@@ -19,7 +19,7 @@ filtered_state_array = np.zeros([4, 6, n_steps])
 particle_array = np.zeros([5, 2000, n_steps])
 
 # create filter instance
-filter_instance = particle_filter.ParticleFilter(clustering_interval=10)
+filter_instance = particle_filter.ParticleFilter(clustering_interval=1)
 
 # run filter steps with vehicle_position and local_updraft_estimate reward
 for i in range(n_steps):

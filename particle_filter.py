@@ -50,6 +50,7 @@ class ParticleFilter:
         self.clustering_interval = clustering_interval
         self.filtered_state = np.zeros([4, 6])
         self.filter_step = 0
+        self.test = 0
 
     def reset_filter(self):
         self.particles = self.init_particles()

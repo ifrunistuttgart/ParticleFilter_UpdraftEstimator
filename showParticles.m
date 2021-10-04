@@ -1,8 +1,14 @@
 %% Script for plotting particles after simulation
 
+% clean variables and workspace
+clc 
+clear all
+close all
+
 % load results from HiL test
-logdata = readmatrix('./HIL_Test_17_05/log_17-May-2021_13-00.csv');
-position_array = logdata(1:600,5:7)';
+%logdata = readmatrix('./HIL_Test_17_05/log_17-May-2021_13-00.csv');
+logdata = readmatrix('./Flight_Test_24_09/log_24-Sep-2021.csv');
+position_array = logdata(1040:1640,5:7)';
 
 load('HiL_1705_filter_result.mat');
 % filter_input = 'HiL_test_filter_input.mat'
@@ -20,8 +26,8 @@ hold on
 
 % create scatter plot handle for particles and set x-y limits
 particle_plot = scatter(particle_array(2,:,1),particle_array(1,:,1),particle_array(5,:,1));
-xlim([-550,650]);
-ylim([-300,650]);
+xlim([-400,400]);
+ylim([-150,500]);
 xlabel('East [m]');
 ylabel('North [m]');
 hold on 
@@ -105,5 +111,5 @@ for i = 1:plot_step:(filter_steps)
     
     %drawnow 
     frame = getframe(gcf); %get frame
-    pause(0.1)
+    pause(0.01)
 end
