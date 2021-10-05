@@ -57,7 +57,6 @@ class ParticleFilter:
         self.IDX = np.zeros(self.params.N, dtype=np.uint64)
         self.cluster_num = 0
         self.filtered_state = np.zeros([4, 6])
-        #self.filter_step = 0
 
     def init_particles(self):
         """ Initializes particles with random NE-positions and equal weights
@@ -162,7 +161,6 @@ class ParticleFilter:
         # normalize weights
         weight_sum = np.sum(self.particles[4, :])
         self.particles[4, :] = self.particles[4, :] / weight_sum
-
 
     def resampling(self):
         """ Performs resampling, if effective number of particles falls below a given threshold
