@@ -28,7 +28,7 @@ def estimate_local_updraft(v_NED, V_A, sinkrate=0.674):
     mask = np.ones(10)/10  # moving average filter mask
     dt = 0.1
     dV_A = np.diff(V_A)/dt  # derivative of air speed
-    dV_A_average = np.convolve(dV_A, mask, mode='same')
+    dV_A_average = np.convolve(dV_A, mask, mode='same')  # moving average of dV_A
 
     w = - v_NED[1:, 2] + V_A[1:] * dV_A_average / 9.81
 
@@ -36,12 +36,31 @@ def estimate_local_updraft(v_NED, V_A, sinkrate=0.674):
     return updraft
 
 
+def get_reset_trigger():
+    """
+
+    Returns
+    -------
+    trigger : ndarray
+        Indicates mode switch during flight test, which resets particle filter
+    """
+
+    rc_input = pd.read_csv('Flight_Test_24_09/log_2021-9-24_ikura_autonomous_soaring_input_rc_0.csv', usecols=[13])
+    rc_input = rc_input.to_numpy()
+    rc_diff = np.diff(rc_input, axis=0)  # calculate difference to detect rising/falling edge
+    rc_pad = np.pad(rc_diff, pad_width=(1, 0))  # add 0s as every second entry, as rc_log is sampled with half frequency
+    rc_flat = rc_pad.reshape(-1)  # flatten array to 1D
+    trigger = np.where(rc_flat != 0, 1, 0)  # set values with non-zero difference to 1
+    return trigger
+
+
 """ Start Postprocessing """
 
 # import data from csv-File
-log_data = pd.read_csv('Flight_test_24_09/log_24-Sep-2021.csv')
+log_data = pd.read_csv('Flight_Test_24_09/log_24-Sep-2021.csv')
 vehicle_position = log_data[['x', 'y', 'z']].to_numpy()
 vehicle_vel = log_data[['vx', 'vy', 'vz']].to_numpy()
+reset_trigger = get_reset_trigger()
 
 # calculate local_updraft_estimate
 airspeed = np.linalg.norm(vehicle_vel, axis=1)
@@ -53,7 +72,7 @@ filtered_state_array = np.zeros([4, 6, n_steps])
 particle_array = np.zeros([5, 2000, n_steps])
 
 # create filter instance
-filter_instance = particle_filter.ParticleFilter(clustering_interval=1)
+filter_instance = particle_filter.ParticleFilter(clustering_interval=10)
 
 # run filter with vehicle_position and local_updraft_estimate reward
 for i in range(n_steps):
@@ -68,6 +87,10 @@ for i in range(n_steps):
     # store filter step result to array
     particle_array[:, :, i] = filter_instance.particles
     filtered_state_array[:, :, i] = filter_instance.filtered_state
+
+    if reset_trigger[i] == 1:
+        filter_instance.reset_filter()
+        print("Reset Filter at step {}".format(i))
 
 # export and save filter results
 filter_data = {'particle_array': particle_array,
