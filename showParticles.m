@@ -67,7 +67,7 @@ hold on
 
 % add grid and legend
 legend([particle_plot,position_plot,updraft_est_1],...
-    {'Particles','Aircraft Position','Real Updraft','Estimated Updraft'})
+    {'Particles','Aircraft Position','Updraft Estimates','Estimated Updraft'})
 grid on
 
 % Add textboxes for time and control mode
@@ -125,15 +125,21 @@ end
 function update_updraft_plot(updraft_handle, filtered_state_array, updraft, index)
  % Update updraft position plot for up to 6 updrafts
     
-theta = 0:pi/20:2*pi;
-    x_up_est = filtered_state_array(2,updraft,index) + 50 * cos(theta); % EAST
-    y_up_est = filtered_state_array(1,updraft,index) + 50 * sin(theta); % NORTH
+    theta = 0:pi/20:2*pi;
+    updraft_radius = filtered_state_array(4,updraft,index);
+    x_up_est = filtered_state_array(2,updraft,index) + updraft_radius * cos(theta); % EAST
+    y_up_est = filtered_state_array(1,updraft,index) + updraft_radius * sin(theta); % NORTH
     
     if filtered_state_array(2,updraft,index) == 0
         set(updraft_handle,'Visible','Off');
     else
         set(updraft_handle,'Visible','On');
-        set(updraft_handle,'XData',x_up_est,'YData',y_up_est);
+        if filtered_state_array(3,updraft,index) > 0
+            set(updraft_handle,'XData',x_up_est,'YData',y_up_est, 'Color','r');
+        else
+            set(updraft_handle,'XData',x_up_est,'YData',y_up_est, 'Color','b');
+        end
+        
     end
     
 end
