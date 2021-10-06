@@ -36,7 +36,7 @@ def estimate_local_updraft(v_NED, V_A, sinkrate=0.674):
     return updraft
 
 
-def get_reset_trigger():
+def get_mode_and_reset_trigger():
     """
 
     Returns
@@ -51,7 +51,9 @@ def get_reset_trigger():
     rc_pad = np.pad(rc_diff, pad_width=(1, 0))  # add 0s as every second entry, as rc_log is sampled with half frequency
     rc_flat = rc_pad.reshape(-1)  # flatten array to 1D
     trigger = np.where(rc_flat != 0, 1, 0)  # set values with non-zero difference to 1
-    return trigger
+    mode = np.where(rc_input == 1994, 1, 2)
+    mode = np.hstack((mode, mode)).reshape(-1)
+    return mode, trigger
 
 
 """ Start Postprocessing """
@@ -60,7 +62,7 @@ def get_reset_trigger():
 log_data = pd.read_csv('Flight_Test_24_09/log_24-Sep-2021.csv')
 vehicle_position = log_data[['x', 'y', 'z']].to_numpy()
 vehicle_vel = log_data[['vx', 'vy', 'vz']].to_numpy()
-reset_trigger = get_reset_trigger()
+control_mode, reset_trigger = get_mode_and_reset_trigger()
 
 # calculate local_updraft_estimate
 airspeed = np.linalg.norm(vehicle_vel, axis=1)
@@ -95,6 +97,7 @@ for i in range(n_steps):
 # export and save filter results
 filter_data = {'particle_array': particle_array,
                'filtered_state_array': filtered_state_array, 'filter_steps': n_steps,
-               'vehicle_position': vehicle_position, 'vehicle_velocity': vehicle_vel}
+               'vehicle_position': vehicle_position, 'vehicle_velocity': vehicle_vel,
+               'control_mode': control_mode}
 
 sio.savemat('./Flight_Test_24_09_filter_result.mat', filter_data)
