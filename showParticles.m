@@ -10,7 +10,8 @@ clear all
 close all
 
 % load data from flight test
-load('Flight_Test_24_09/Flight_Test_24_09_filter_result.mat');
+load('Flight_Test_24_09/Flight_Test_24_09_filter_result_prevent_true.mat');
+%load('Flight_Test_24_09/Flight_Test_24_09_filter_result_prevent_false.mat');
 log_frequency = 10; % number of logged data points per second
 
 %% Settings 

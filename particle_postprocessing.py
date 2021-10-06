@@ -37,10 +37,12 @@ def estimate_local_updraft(v_NED, V_A, sinkrate=0.674):
 
 
 def get_mode_and_reset_trigger():
-    """
+    """ Extracts control mode from flight log. 
 
     Returns
     -------
+    mode : ndarray
+        Flight control mode ( 1=manual, 2=auto)
     trigger : ndarray
         Indicates mode switch during flight test, which resets particle filter
     """
