@@ -5,6 +5,8 @@ import numpy as np
 import scipy.io as sio
 import particle_filter
 import pandas as pd
+from scipy.signal import savgol_filter
+import matplotlib.pyplot as plt
 
 
 def estimate_local_updraft(v_NED, V_A, sinkrate=0.674):
@@ -28,9 +30,10 @@ def estimate_local_updraft(v_NED, V_A, sinkrate=0.674):
     mask = np.ones(10)/10  # moving average filter mask
     dt = 0.1
     dV_A = np.diff(V_A)/dt  # derivative of air speed
-    dV_A_average = np.convolve(dV_A, mask, mode='same')  # moving average of dV_A
-
-    w = - v_NED[1:, 2] + V_A[1:] * dV_A_average / 9.81
+    dV_A_average_1 = np.convolve(dV_A, mask, mode='same')  # moving average of dV_A
+    dV_A_average_2 = np.convolve(dV_A_average_1, mask, mode='same')
+    # dV_A_filtered = savgol_filter(dV_A, 13, 1)
+    w = - v_NED[1:, 2] + V_A[1:] * dV_A_average_2 / 9.81
 
     updraft = w + sinkrate
     return updraft
@@ -100,6 +103,6 @@ for i in range(n_steps):
 filter_data = {'particle_array': particle_array,
                'filtered_state_array': filtered_state_array, 'filter_steps': n_steps,
                'vehicle_position': vehicle_position, 'vehicle_velocity': vehicle_vel,
-               'control_mode': control_mode}
+               'control_mode': control_mode, 'local_updraft': local_updraft_estimate}
 
 sio.savemat('./Flight_Test_24_09_filter_result.mat', filter_data)
