@@ -14,7 +14,7 @@ load('Flight_Test_24_09/Flight_Test_24_09_filter_result_1_Hz.mat');
 
 %% Settings 
 
-start_step = 1300;
+start_step = 1;
 end_step = 1850;
 start_time = start_step;
 end_time = end_step;

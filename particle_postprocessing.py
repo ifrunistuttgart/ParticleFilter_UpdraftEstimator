@@ -1,10 +1,16 @@
 """ This script is used for postprocessing the particle distribution from flight test data.
 """
 
+import sys
+
+sys.path.append('../ParticleFilter')
+
 import numpy as np
 import scipy.io as sio
 import particle_filter
 import pandas as pd
+from scipy.signal import savgol_filter
+import matplotlib.pyplot as plt
 
 
 def estimate_local_updraft(v_NED, V_A, sinkrate=0.674):

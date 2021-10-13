@@ -15,7 +15,7 @@ log_frequency = 10; % number of logged data points per second
 
 %% Settings 
 
-start_step = 13000;
+start_step = 1;
 end_step = filter_steps;
 start_time = start_step/log_frequency;
 end_time = end_step/log_frequency;
