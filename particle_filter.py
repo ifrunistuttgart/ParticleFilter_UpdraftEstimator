@@ -35,7 +35,7 @@ class ParticleFilter:
         NE-Position of detected updrafts
     """
 
-    def __init__(self, clustering_interval=1):
+    def __init__(self, clustering_interval=1, update_frequency=1):
         """
         Parameters
         ----------
@@ -48,6 +48,7 @@ class ParticleFilter:
         self.IDX = np.zeros(self.params.N, dtype=np.uint64)
         self.cluster_num = 0
         self.clustering_interval = clustering_interval
+        self.omega = update_frequency
         self.filtered_state = np.zeros([4, 6])
         self.filter_step = 0
         self.test = 0
@@ -117,7 +118,8 @@ class ParticleFilter:
         if (self.filter_step % self.clustering_interval) == 0:
             self.cluster_analysis()
             self.density_limitation()
-            self.calculate_filtered_state()
+
+        self.calculate_filtered_state()
 
         # assign return values
         pf_updraft_estimates = self.filtered_state
@@ -143,7 +145,7 @@ class ParticleFilter:
 
         # Randomly move particles in NE direction
         self.particles[0:2, :] = (self.particles[0:2, :] + np.random.randn(2, self.params.N) *
-                                  self.params.tau * self.params.kappa * self.params.pos_noise)
+                                  (self.params.tau/self.omega) * self.params.kappa * self.params.pos_noise)
 
         self.particles[2, :] = self.particles[2, :] + np.random.randn(self.params.N) * self.params.strength_noise
         self.particles[3, :] = self.particles[3, :] + np.random.randn(self.params.N) * self.params.spread_noise

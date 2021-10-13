@@ -1,6 +1,10 @@
 """ This script is used for postprocessing the particle distribution from flight test data.
 """
 
+import sys
+
+sys.path.append('../ParticleFilter')
+
 import numpy as np
 import scipy.io as sio
 import particle_filter
@@ -35,12 +39,12 @@ def estimate_local_updraft(v_NED, V_A, sinkrate=0.674):
     # dV_A_filtered = savgol_filter(dV_A, 13, 1)
     w = - v_NED[1:, 2] + V_A[1:] * dV_A_average_2 / 9.81
 
-    updraft = w + sinkrate
+    updraft = np.clip(w + sinkrate, 0, None)
     return updraft
 
 
 def get_mode_and_reset_trigger():
-    """ Extracts control mode from flight log. 
+    """ Extracts control mode from flight log.
 
     Returns
     -------
@@ -79,7 +83,7 @@ filtered_state_array = np.zeros([4, 6, n_steps])
 particle_array = np.zeros([5, 2000, n_steps])
 
 # create filter instance
-filter_instance = particle_filter.ParticleFilter(clustering_interval=10)
+filter_instance = particle_filter.ParticleFilter(clustering_interval=10, update_frequency=10)
 
 # run filter with vehicle_position and local_updraft_estimate reward
 for i in range(n_steps):
@@ -97,7 +101,6 @@ for i in range(n_steps):
 
     if reset_trigger[i] == 1:
         filter_instance.reset_filter()
-        print("Reset Filter at step {}".format(i))
 
 # export and save filter results
 filter_data = {'particle_array': particle_array,
@@ -105,4 +108,4 @@ filter_data = {'particle_array': particle_array,
                'vehicle_position': vehicle_position, 'vehicle_velocity': vehicle_vel,
                'control_mode': control_mode, 'local_updraft': local_updraft_estimate}
 
-sio.savemat('./Flight_Test_24_09_filter_result.mat', filter_data)
+sio.savemat('./Flight_Test_24_09_filter_result_10_Hz.mat', filter_data)

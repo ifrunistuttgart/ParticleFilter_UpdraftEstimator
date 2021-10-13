@@ -14,11 +14,11 @@ close all
 %load('Flight_Test_24_09/Flight_Test_24_09_filter_result_prevent_false.mat');
 log_frequency = 10; % number of logged data points per second
 
-file1 = matfile('Flight_Test_24_09/Flight_Test_24_09_filter_result.mat');
-file2 = matfile('Flight_Test_24_09/Flight_Test_24_09_filter_result_double_filtered.mat');
+file1 = matfile('Flight_Test_24_09/Flight_Test_24_09_filter_result_reduced_tau.mat');
+file2 = matfile('Flight_Test_24_09/Flight_Test_24_09_filter_result_inv_sinkrate.mat');
 files = {file1,file2};
 
-fig_title = {'Baseline', 'Twice moving average'};
+fig_title = {'Baseline', 'Clipped'};
 %% Settings 
 
 start_step = 13000;
@@ -117,7 +117,7 @@ for i = 1:log_frequency:(end_step-start_step)
         % update particles 
         x = particles{fig_num}(2,:,i);
         y = particles{fig_num}(1,:,i);
-        marker = particles{fig_num}(5,:,i).*300;
+        marker = max(1e-200, particles{fig_num}(5,:,i).*300);
         set(particle_plot(fig_num),'XData',x,'YData',y,'SizeData',marker,'CData',[1 0 0]);
 
         % udpdate updraft positions
@@ -130,7 +130,7 @@ for i = 1:log_frequency:(end_step-start_step)
 
         % update aircraft position
         set(position_plot(fig_num),'XData',vehicle_position{fig_num}(i,2),'YData',vehicle_position{fig_num}(i,1));
-        set(time_annotation(fig_num),'String',sprintf('t=%d s',(i-1)/10));
+        set(time_annotation(fig_num),'String',sprintf('t=%d s',(start_step+i-1)/10));
 
         if control_mode{fig_num}(i) == 1
             set(control_annotation(fig_num),'String',sprintf('Mode=%s','Manual'));
