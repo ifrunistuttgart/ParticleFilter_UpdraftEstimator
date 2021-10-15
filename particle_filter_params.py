@@ -9,7 +9,7 @@ class ParamsParticleFilter:
     def __init__(self):
         self.tau = 1  # update timestep
         self.N = 2000  # number of particles
-        self.threshold = .1 * self.N  # effective NoP threshold for resampling
+        self.threshold = 0.2 * self.N  # effective NoP threshold for resampling
 
         self.meas_dev = 2  # measurement deviation for update
 
@@ -31,6 +31,6 @@ class ParamsParticleFilter:
 
         # DBSCAN parameters
         self.cluster_epsilon = 60 # neighborhood parameter
-        self.cluster_MinPts = 120
-        self.cluster_maxParticles = 500
+        self.cluster_MinPts = 160
+        self.cluster_maxParticles = 600
         self.cluster_colors = np.random.rand(10, 3)

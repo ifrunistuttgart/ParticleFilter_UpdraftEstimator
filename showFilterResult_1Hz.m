@@ -14,8 +14,8 @@ load('Flight_Test_24_09/Flight_Test_24_09_filter_result_1_Hz.mat');
 
 %% Settings 
 
-start_step = 1;
-end_step = 1850;
+start_step = 1370;
+end_step = 1700;
 start_time = start_step;
 end_time = end_step;
 
@@ -92,7 +92,7 @@ for i = start_step:end_step
     % update particles 
     x = particle_array(2,:,i);
     y = particle_array(1,:,i);
-    marker = particle_array(5,:,i).*300;
+    marker = 0.5;
     set(particle_plot,'XData',x,'YData',y,'SizeData',marker,'CData',[1 0 0]);
     
     % udpdate updraft positions
@@ -117,8 +117,8 @@ for i = start_step:end_step
     addpoints(height_plot, double(i),-vehicle_position(i,3));
     
     %drawnow 
-    frame = getframe(gcf); %get frame
-    %pause(0.01)
+    %frame = getframe(gcf); %get frame
+    pause(0.01)
     filtered_state_array(:,:,i)
 end
 

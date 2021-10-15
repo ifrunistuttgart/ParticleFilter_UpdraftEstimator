@@ -5,8 +5,6 @@ import numpy as np
 import scipy.io as sio
 import particle_filter
 import pandas as pd
-from scipy.signal import savgol_filter
-import matplotlib.pyplot as plt
 
 
 def estimate_local_updraft(v_NED, V_A, sinkrate=0.674):
@@ -111,4 +109,4 @@ filter_data = {'particle_array': particle_array,
                'filter_steps': n_filter_steps, 'vehicle_position': vehicle_position,
                'control_mode': control_mode, 'local_updraft': local_updraft_estimate}
 
-sio.savemat('./Flight_Test_24_09_filter_result_1_Hz.mat', filter_data)
+sio.savemat('./Flight_Test_24_09/Flight_Test_24_09_filter_result_1_Hz.mat', filter_data)
