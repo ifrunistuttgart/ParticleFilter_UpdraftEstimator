@@ -75,6 +75,7 @@ n_data_points = local_updraft_estimate.size  # data is logged with 10 Hz
 n_filter_steps = n_data_points  # filter runs with 1 Hz
 filtered_state_array = np.zeros([4, 6, n_filter_steps])
 particle_array = np.zeros([5, 2000, n_filter_steps])
+assigned_cluster = np.zeros([2000, n_filter_steps])
 
 # create filter instance
 filter_instance = particle_filter.ParticleFilter(clustering_interval=1, update_frequency=1)
@@ -95,6 +96,7 @@ for i in range(n_filter_steps):
     # store filter step result to array
     particle_array[:, :, i] = filter_instance.particles
     filtered_state_array[:, :, i] = filter_instance.filtered_state
+    assigned_cluster[:, i] = filter_instance.IDX
 
     switch_cooldown += 1
     trigger_range = np.clip(np.arange(i*10, (i+1)*10, 1), None, (n_data_points-1)*10)
@@ -105,8 +107,8 @@ for i in range(n_filter_steps):
 
 # export and save filter results
 filter_data = {'particle_array': particle_array,
-               'filtered_state_array': filtered_state_array, 'n_data_points': n_data_points,
-               'filter_steps': n_filter_steps, 'vehicle_position': vehicle_position,
+               'filtered_state_array': filtered_state_array, 'assigned_cluster': assigned_cluster,
+               'n_data_points': n_data_points, 'filter_steps': n_filter_steps, 'vehicle_position': vehicle_position,
                'control_mode': control_mode, 'local_updraft': local_updraft_estimate}
 
 sio.savemat('./Flight_Test_24_09/Flight_Test_24_09_filter_result_1_Hz.mat', filter_data)
