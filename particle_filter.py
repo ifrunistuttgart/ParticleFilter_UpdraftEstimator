@@ -43,7 +43,7 @@ class ParticleFilter:
         """
 
         self.params = particle_filter_params.ParamsParticleFilter()
-        self.prevent = False
+        self.prevent = True
         self.particles = self.init_particles()
         self.IDX = np.zeros(self.params.N, dtype=np.uint64)
         self.cluster_num = 0
@@ -243,7 +243,7 @@ class ParticleFilter:
         """ Calculate filtered state, which contains positions of estimated updrafts
 
         """
-
+        self.filtered_state = np.zeros([4, 6])
         for i in range(1, self.cluster_num + 1):
             aCluster = self.particles[:, self.IDX == i]
             aCluster[4, :] = aCluster[4, :] / sum(aCluster[4, :])
