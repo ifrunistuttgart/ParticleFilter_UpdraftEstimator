@@ -2,3 +2,6 @@
 *.pyc
 *.mat
 *.csv
+*.pdf
+*.dat
+learning2soar_figures/
