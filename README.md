@@ -21,7 +21,7 @@ soaring and the particle filter can be found in the following papers:
 > Notter, S., Groß, P., Schrapel, P., and Fichter, W., “Multiple Thermal Updraft Estimation and Observability Analysis,” Journal
 of Guidance, Control, and Dynamics, Vol. 43, No. 3, 2020, pp. 490–503. doi:10.2514/1.G004205
 
-![Dummy image](resources/UpdraftEstimatorImage.PNG)
+<img src="resources/UpdraftEstimatorImage.png" width="500">
 
 
 ### Getting started
