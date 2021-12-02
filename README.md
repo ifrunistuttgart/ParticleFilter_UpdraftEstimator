@@ -7,8 +7,7 @@ The estimator has been employed to localize real updrafts during flight tests. T
 The estimator has been successfully employed for [autonomous soaring](https://github.com/ifrunistuttgart/RL_CrossCountrySoaring) to make an unmanned glider aircraft localize and exploit thermal updrafts.
 
 <p align="middle">
-  <img src="resources/observation_model.png" height="260", alt="Estimation problem illustration" />
-  <img src="resources/clustering.png" height="190", alt="Particle filter working principle illustration" /> 
+  <img src="resources/observation_model.png" width="500", alt="Estimation problem illustration" />
 </p>
 
 For more detailed information about the theoretical background of the particle filter based multiple updraft estimator, we refer the reader to the associated paper listed below.
@@ -21,4 +20,4 @@ as well as the estimated updrafts during the flight test.
 If you apply the filter or build upon the algorithm in an academic context, please cite:
 
 > Notter, S., Groß, P., Schrapel, P., and Fichter, W., “Multiple Thermal Updraft Estimation and Observability Analysis,” Journal
-of Guidance, Control, and Dynamics, Vol. 43, No. 3, 2020, pp. 490–503. doi:10.2514/1.G004205
+of Guidance, Control, and Dynamics, Vol. 43, No. 3, 2020, pp. 490–503. https://doi.org/10.2514/1.G004205
