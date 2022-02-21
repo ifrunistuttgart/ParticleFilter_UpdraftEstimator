@@ -4,7 +4,7 @@
 This repository contains a flight-tested *Python* implementation of a particle-filter-based multiple updraft estimator. The filter was developed by researchers at the [Institute of Flight Mechanics and Controls (iFR)](https://www.ifr.uni-stuttgart.de/) at the University of Stuttgart. Given its non-parametric nature, the particle-filter-based updraft estimator offers the unique ability to estimate the position, strength, and spread of several thermals, at once.
 
 The estimator has been employed to localize real updrafts during flight tests. The filter subject to the published source code is executable on low-cost embedded hardware. The designers have been executing the estimator on a *Raspberry Pi Zero*, which functions as a co-processor for a *Pixhawk 4* flight controller.
-The estimator has been successfully employed for [autonomous soaring](https://github.com/ifrunistuttgart/RL_CrossCountrySoaring) to make an unmanned glider aircraft localize and exploit thermal updrafts.
+The estimator has been successfully employed for [autonomous cross-country soaring](https://github.com/ifrunistuttgart/RL_CrossCountrySoaring) to make an unmanned glider aircraft localize and exploit thermal updrafts.
 
 <p align="middle">
   <img src="resources/observation_model.png" width="500", alt="Estimation problem illustration" />
